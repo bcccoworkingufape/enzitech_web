@@ -1,0 +1,15 @@
+version: '3.8'
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  web:
+    image: ${WEB_IMAGE:-ghcr.io/bcccoworkingufape/enzitech_web:latest}
+    restart: always
+    ports:
+      - "8083:80"
+    logging: *default-logging
