@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { setUnauthorizedHandler } from '@/api/client';
 import { authApi } from '@/api/endpoints';
@@ -36,6 +36,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(response.user);
     return response.user;
   }, []);
+
+  const userRef = useRef(user);
+  userRef.current = user;
+
+  useEffect(
+    () =>
+      session.onExternalChange(() => {
+        const current = userRef.current;
+        const next = session.getToken() ? session.getUser() : null;
+        if (current?.id === next?.id) return;
+        queryClient.clear();
+        setUser(next);
+        if (current && !next) snackbar.show('Sua sessão foi encerrada em outra aba.');
+      }),
+    [queryClient, snackbar],
+  );
 
   useEffect(() => {
     setUnauthorizedHandler(() => {

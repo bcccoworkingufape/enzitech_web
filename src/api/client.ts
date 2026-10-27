@@ -46,7 +46,7 @@ async function request<T>(method: Method, path: string, body?: unknown): Promise
       }
     } catch {
     }
-    if (response.status === 401 && token) onUnauthorized?.();
+    if (response.status === 401) onUnauthorized?.();
     throw new ApiError(response.status, String(message));
   }
 

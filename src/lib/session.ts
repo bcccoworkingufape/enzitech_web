@@ -38,6 +38,13 @@ export const session = {
     write(TOKEN_KEY, null);
     write(USER_KEY, null);
   },
+  onExternalChange(listener: () => void) {
+    const handler = (event: StorageEvent) => {
+      if (event.key === TOKEN_KEY || event.key === USER_KEY || event.key === null) listener();
+    };
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
+  },
 };
 
 export const preferences = {
