@@ -11,5 +11,5 @@ services:
     image: ${WEB_IMAGE:-ghcr.io/bcccoworkingufape/enzitech_web:latest}
     restart: always
     ports:
-      - "8083:80"
+      - "8084:80"
     logging: *default-logging
