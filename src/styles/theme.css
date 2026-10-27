@@ -1,0 +1,217 @@
+/*
+ * Tokens de cor espelhados de enzitech_app/lib/shared/ui/themes/app_colors.dart
+ * (esquemas Material 3 gerados em https://m3.material.io/theme-builder#/custom).
+ */
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('/fonts/Ubuntu-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('/fonts/Ubuntu-Medium.ttf') format('truetype');
+  font-weight: 500 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('/fonts/Ubuntu-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  --primary: #006d39;
+  --on-primary: #ffffff;
+  --primary-container: #b9eeb9;
+  --on-primary-container: #00210d;
+  --secondary: #426916;
+  --on-secondary: #ffffff;
+  --secondary-container: #d1e9d0;
+  --on-secondary-container: #0f2000;
+  --tertiary: #7f5700;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #ffdead;
+  --on-tertiary-container: #281900;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error: #ffffff;
+  --on-error-container: #410002;
+  --surface: #fbfdf7;
+  --on-surface: #191c19;
+  --surface-container-highest: #dde5db;
+  --on-surface-variant: #414941;
+  --outline: #717971;
+  --outline-variant: #c1c9bf;
+  --inverse-surface: #2e312e;
+  --on-inverse-surface: #f0f1ec;
+  --inverse-primary: #49e087;
+  --surface-tint: #006d39;
+  --success: #4caf50;
+  --muted-text: #97979a;
+  --logo-color: var(--primary);
+  --app-bg: #f3f6f0;
+  --card-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --hover: rgb(25 28 25 / 0.05);
+
+  /* Cores das enzimas (AppColors) */
+  --enzyme-betaglucosidase: #721817;
+  --enzyme-aryl: #fa9f42;
+  --enzyme-fosfatase-acida: #2b4162;
+  --enzyme-fosfatase-alcalina: #88ab75;
+  --enzyme-urease: #675c38;
+  --enzyme-fda: #92437f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --primary: #49e087;
+    --on-primary: #00391b;
+    --primary-container: #005229;
+    --on-primary-container: #6afea0;
+    --secondary: #a6d475;
+    --on-secondary: #1d3700;
+    --secondary-container: #2c5000;
+    --on-secondary-container: #cce9ad;
+    --tertiary: #fcbb4a;
+    --on-tertiary: #432c00;
+    --tertiary-container: #604100;
+    --on-tertiary-container: #ffdead;
+    --error: #ffb4ab;
+    --error-container: #93000a;
+    --on-error: #690005;
+    --on-error-container: #ffdad6;
+    --surface: #191c19;
+    --on-surface: #e1e3de;
+    --surface-container-highest: #414941;
+    --on-surface-variant: #c1c9bf;
+    --outline: #8b938a;
+    --outline-variant: #414941;
+    --inverse-surface: #e1e3de;
+    --on-inverse-surface: #191c19;
+    --inverse-primary: #006d39;
+    --surface-tint: #49e087;
+    --logo-color: #ffffff;
+    --app-bg: #121512;
+    --card-bg: #1c201c;
+    --sidebar-bg: #171a17;
+    --hover: rgb(225 227 222 / 0.06);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --primary: #49e087;
+  --on-primary: #00391b;
+  --primary-container: #005229;
+  --on-primary-container: #6afea0;
+  --secondary: #a6d475;
+  --on-secondary: #1d3700;
+  --secondary-container: #2c5000;
+  --on-secondary-container: #cce9ad;
+  --tertiary: #fcbb4a;
+  --on-tertiary: #432c00;
+  --tertiary-container: #604100;
+  --on-tertiary-container: #ffdead;
+  --error: #ffb4ab;
+  --error-container: #93000a;
+  --on-error: #690005;
+  --on-error-container: #ffdad6;
+  --surface: #191c19;
+  --on-surface: #e1e3de;
+  --surface-container-highest: #414941;
+  --on-surface-variant: #c1c9bf;
+  --outline: #8b938a;
+  --outline-variant: #414941;
+  --inverse-surface: #e1e3de;
+  --on-inverse-surface: #191c19;
+  --inverse-primary: #006d39;
+  --surface-tint: #49e087;
+  --logo-color: #ffffff;
+  --app-bg: #121512;
+  --card-bg: #1c201c;
+  --sidebar-bg: #171a17;
+  --hover: rgb(225 227 222 / 0.06);
+}
+
+:root {
+  /* Superfície "elevada" do Material 3: surface + tint de secondaryContainer (Card elevation 4) */
+  --surface-elevated: color-mix(in srgb, var(--secondary-container) 30%, var(--surface));
+  --surface-container: color-mix(in srgb, var(--primary) 6%, var(--surface));
+  --surface-container-high: color-mix(in srgb, var(--primary) 9%, var(--surface));
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --shadow-2: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --shadow-3: 0 4px 8px 3px rgb(0 0 0 / 0.15), 0 1px 3px rgb(0 0 0 / 0.3);
+  --radius-card: 16px;
+  --radius: 12px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.06), 0 1px 3px rgb(0 0 0 / 0.06);
+  --font: 'Ubuntu', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.4;
+  background: var(--app-bg);
+  color: var(--on-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.sr-only {
+  top: 0;
+  left: 0;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
