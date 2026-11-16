@@ -10,6 +10,7 @@ import { ErrorView, LoadingView } from '@/components/StateViews';
 import { useConfirm } from '@/context/DialogContext';
 import { useSettings } from '@/context/SettingsContext';
 import { useSnackbar } from '@/context/SnackbarContext';
+import { enzymeTypeHint } from '@/lib/enzymes';
 import { formatDate, formatNumber } from '@/lib/format';
 import { useExperiment } from '@/lib/queries';
 import { EnzymeTypeBadge } from '@/pages/enzymes/EnzymesPage';
@@ -58,12 +59,15 @@ export function ExperimentDetailsPage() {
           <Button variant="outline" icon={<PencilSimple size={18} />} onClick={() => navigate(`/experimentos/${id}/editar`)}>
             Editar
           </Button>
-          <Button variant="tonal" icon={<FileText size={18} />} disabled={!started} onClick={() => navigate(`/experimentos/${id}/resultados`)}>
-            Resultados
-          </Button>
-          <Button icon={<FunctionIcon size={18} />} disabled={finished} onClick={() => navigate(`/experimentos/${id}/calculo`)}>
-            Cálculo enzimático
-          </Button>
+          {finished ? (
+            <Button icon={<FileText size={18} />} onClick={() => navigate(`/experimentos/${id}/resultados`)}>
+              Resultados
+            </Button>
+          ) : (
+            <Button icon={<FunctionIcon size={18} />} onClick={() => navigate(`/experimentos/${id}/calculo`)}>
+              Cálculo enzimático
+            </Button>
+          )}
         </>
       }
     >
@@ -71,7 +75,7 @@ export function ExperimentDetailsPage() {
         <div className="stack">
           <section className="card hero">
             <PercentIndicator value={experiment.progress} radius={56} lineWidth={12} labelSize={22} />
-            <div style={{ minWidth: 0 }}>
+            <div className="hero-body">
               <span className={`chip ${finished ? 'chip-done' : started ? 'chip-pending' : 'chip-neutral'}`}>
                 {finished ? 'Concluído' : started ? 'Em andamento' : 'Não iniciado'}
               </span>
@@ -102,8 +106,12 @@ export function ExperimentDetailsPage() {
                   {experiment.experimentEnzymes.map((ee) => (
                     <tr key={ee.id}>
                       <td>
-                        <div className="cell-title">{ee.enzyme.name}</div>
-                        <div style={{ fontSize: 12 }}><EnzymeTypeBadge type={ee.enzyme.type} /></div>
+                        <div className="cell-title">
+                          <EnzymeTypeBadge type={ee.enzyme.type} label={ee.enzyme.name} />
+                        </div>
+                        {enzymeTypeHint(ee.enzyme.name, ee.enzyme.type) && (
+                          <div className="cell-sub">{enzymeTypeHint(ee.enzyme.name, ee.enzyme.type)}</div>
+                        )}
                       </td>
                       <td className="num">{formatNumber(ee.variableA)}</td>
                       <td className="num">{formatNumber(ee.variableB)}</td>
@@ -134,7 +142,7 @@ export function ExperimentDetailsPage() {
               <CaretRight size={18} />
             </button>
             <button className="action-tile" disabled={!started} onClick={() => navigate(`/experimentos/${id}/resultados`)}>
-              <span className="stat-icon secondary"><FileText size={22} /></span>
+              <span className="stat-icon"><FileText size={22} /></span>
               <span style={{ flex: 1 }}>
                 <span className="action-tile-title">Resultados</span>
                 <br />

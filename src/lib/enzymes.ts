@@ -14,3 +14,8 @@ export function enzymeTypeLabel(type: string): string {
 export function enzymeColor(type: string): string {
   return ENZYME_TYPES.find((t) => t.key === type)?.color ?? '#000000';
 }
+
+export function enzymeTypeHint(name: string, type: string): string | undefined {
+  const label = enzymeTypeLabel(type);
+  return label.localeCompare(name.trim(), 'pt-BR', { sensitivity: 'base' }) === 0 ? undefined : label;
+}

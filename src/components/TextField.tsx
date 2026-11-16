@@ -1,5 +1,5 @@
 import { useId, useState, type InputHTMLAttributes, type ReactNode } from 'react';
-import { Eye, EyeClosed } from '@phosphor-icons/react';
+import { Eye, EyeClosed, WarningCircle } from '@phosphor-icons/react';
 
 interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement & HTMLTextAreaElement>, 'onChange' | 'value'> {
   label: string;
@@ -51,6 +51,7 @@ export function TextField({ label, value, onChange, error, hint, type = 'text', 
       </div>
       {error ? (
         <span id={`${id}-error`} className="field-error">
+          <WarningCircle size={14} weight="bold" aria-hidden="true" />
           {error}
         </span>
       ) : (

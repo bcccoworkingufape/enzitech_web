@@ -27,20 +27,20 @@ export const isStrongPassword = (password: string) => Object.values(passwordChec
 export type Rule = (value: string) => string | null;
 
 export const rules = {
-  required: (): Rule => (v) => (v.trim() === '' ? '⚠ Campo obrigatório' : null),
-  email: (): Rule => (v) => (v && !EMAIL_RE.test(v.trim()) ? '⚠ E-mail inválido' : null),
-  name: (): Rule => (v) => (v && !NAME_RE.test(v) ? '⚠ Nome inválido' : null),
+  required: (): Rule => (v) => (v.trim() === '' ? 'Campo obrigatório' : null),
+  email: (): Rule => (v) => (v && !EMAIL_RE.test(v.trim()) ? 'E-mail inválido' : null),
+  name: (): Rule => (v) => (v && !NAME_RE.test(v) ? 'Nome inválido' : null),
   maxChars: (max: number): Rule => (v) =>
-    v.length > max ? `⚠ Esse campo deve ter no máximo ${max} caractere(s)` : null,
-  strongPassword: (): Rule => (v) => (v && !isStrongPassword(v) ? '⚠ Senha não atende ao padrão informado.' : null),
-  equals: (other: () => string): Rule => (v) => (v && v !== other() ? '⚠ As senhas digitadas não coincidem.' : null),
-  numeric: (): Rule => (v) => (v && Number.isNaN(Number(v.replace(',', '.'))) ? '⚠ Número inválido' : null),
-  greaterThanZero: (): Rule => (v) => (v && !(Number(v.replace(',', '.')) > 0) ? '⚠ Insira um número maior que zero' : null),
-  integer: (): Rule => (v) => (v && !Number.isInteger(Number(v.replace(',', '.'))) ? '⚠ Insira um número inteiro' : null),
+    v.length > max ? `Esse campo deve ter no máximo ${max} caractere(s)` : null,
+  strongPassword: (): Rule => (v) => (v && !isStrongPassword(v) ? 'Senha não atende ao padrão informado.' : null),
+  equals: (other: () => string): Rule => (v) => (v && v !== other() ? 'As senhas digitadas não coincidem.' : null),
+  numeric: (): Rule => (v) => (v && Number.isNaN(Number(v.replace(',', '.'))) ? 'Número inválido' : null),
+  greaterThanZero: (): Rule => (v) => (v && !(Number(v.replace(',', '.')) > 0) ? 'Insira um número maior que zero' : null),
+  integer: (): Rule => (v) => (v && !Number.isInteger(Number(v.replace(',', '.'))) ? 'Insira um número inteiro' : null),
   min: (min: number): Rule => (v) =>
-    v && Number(v.replace(',', '.')) < min ? `⚠ Número deve ser maior ou igual a ${min}.` : null,
+    v && Number(v.replace(',', '.')) < min ? `Número deve ser maior ou igual a ${min}.` : null,
   max: (max: number): Rule => (v) =>
-    v && Number(v.replace(',', '.')) > max ? `⚠ Número deve ser menor ou igual a ${max}.` : null,
+    v && Number(v.replace(',', '.')) > max ? `Número deve ser menor ou igual a ${max}.` : null,
 };
 
 export function validate(value: string, fieldRules: Rule[]): string | null {

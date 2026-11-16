@@ -88,8 +88,8 @@ export function ExperimentsPage() {
     >
       <div className="stats">
         <StatCard icon={<Flask size={22} />} value={isLoading ? '–' : counts.todos} label="Experimentos" />
-        <StatCard icon={<ClockClockwise size={22} />} value={isLoading ? '–' : counts.andamento} label="Em andamento" tone="tertiary" />
-        <StatCard icon={<CheckCircle size={22} />} value={isLoading ? '–' : counts.concluidos} label="Concluídos" tone="secondary" />
+        <StatCard icon={<ClockClockwise size={22} />} value={isLoading ? '–' : counts.andamento} label="Em andamento" className="stat-secondary" />
+        <StatCard icon={<CheckCircle size={22} />} value={isLoading ? '–' : counts.concluidos} label="Concluídos" className="stat-secondary" />
         <StatCard icon={<ChartPieSlice size={22} />} value={isLoading ? '–' : toPercent(avgProgress)} label="Progresso médio" />
       </div>
 
@@ -107,7 +107,7 @@ export function ExperimentsPage() {
         </div>
         <div className="toolbar">
           <SearchBox value={search} onChange={(v) => update({ busca: v || null })} placeholder="Filtrar por nome ou descrição" />
-          {!isLoading && <span className="muted" style={{ fontSize: 13 }}>🔬 {rows.length} de {all.length} experimento(s)</span>}
+          {!isLoading && <span className="muted" style={{ fontSize: 13 }}>{rows.length} de {all.length} {all.length === 1 ? 'experimento' : 'experimentos'}</span>}
         </div>
 
         {isLoading ? (

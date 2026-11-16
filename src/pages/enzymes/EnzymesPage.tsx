@@ -22,11 +22,11 @@ import { rules } from '@/lib/validators';
 
 type SortKey = 'name' | 'type' | 'createdAt';
 
-export function EnzymeTypeBadge({ type }: { type: string }) {
+export function EnzymeTypeBadge({ type, label }: { type: string; label?: string }) {
   return (
     <span className="enzyme-type">
       <span className="color-dot" style={{ background: enzymeColor(type) }} />
-      {enzymeTypeLabel(type)}
+      {label ?? enzymeTypeLabel(type)}
     </span>
   );
 }
@@ -116,7 +116,7 @@ export function EnzymesPage() {
           />
         ) : (
           <div className="table-wrap">
-            <table className="table">
+            <table className="table stackable">
               <thead>
                 <tr>
                   <th><SortHeader label="Nome" sortKey="name" sort={sort} onSort={setSort} /></th>
@@ -133,10 +133,10 @@ export function EnzymesPage() {
                   <tr key={e.id}>
                     <td className="cell-title">{e.name}</td>
                     <td><EnzymeTypeBadge type={e.type} /></td>
-                    <td className="muted">{e.formula ?? '—'}</td>
-                    <td className="num">{formatNumber(e.variableA)}</td>
-                    <td className="num">{formatNumber(e.variableB)}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{formatDate(e.createdAt)}</td>
+                    <td data-label="Fórmula" className="muted">{e.formula ?? '—'}</td>
+                    <td data-label="Variável A" className="num">{formatNumber(e.variableA)}</td>
+                    <td data-label="Variável B" className="num">{formatNumber(e.variableB)}</td>
+                    <td data-label="Criada em" style={{ whiteSpace: 'nowrap' }}>{formatDate(e.createdAt)}</td>
                     {isAdmin && (
                       <td className="actions">
                         <button className="icon-btn sm danger" title="Excluir" aria-label={`Excluir ${e.name}`} onClick={() => deleteEnzyme(e)}>

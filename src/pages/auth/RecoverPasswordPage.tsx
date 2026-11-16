@@ -33,7 +33,7 @@ export function RecoverPasswordPage() {
 
   return (
     <AuthLayout
-      title="Recuperar Senha"
+      title="Recuperar senha"
       description="Informe seu e-mail abaixo. Enviaremos as instruções para você redefinir a sua senha."
       steps={[1, 3]}
       footer={<Link to="/login" className="link">Voltar para o login</Link>}
@@ -41,7 +41,7 @@ export function RecoverPasswordPage() {
       <form onSubmit={onSubmit} noValidate>
         <TextField label="E-mail" type="email" autoComplete="email" autoFocus {...email.props} />
         <Button type="submit" block disabled={!email.value} loading={loading} style={{ marginTop: 8 }}>
-          Enviar E-mail
+          Enviar e-mail
         </Button>
       </form>
     </AuthLayout>

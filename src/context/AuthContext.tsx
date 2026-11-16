@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setUnauthorizedHandler(() => {
-      snackbar.show('⚠ Não autorizado: Token expirado ou usuário inválido.', { type: 'error' });
+      snackbar.show('Não autorizado: Token expirado ou usuário inválido.', { type: 'error' });
       logout('Faça seu login novamente.');
     });
     return () => setUnauthorizedHandler(null);

@@ -12,7 +12,7 @@ import { LoadingView, NotFoundView } from '@/components/StateViews';
 import { Stepper } from '@/components/StepIndicator';
 import { TextField } from '@/components/TextField';
 import { useSnackbar } from '@/context/SnackbarContext';
-import { enzymeColor, enzymeTypeLabel } from '@/lib/enzymes';
+import { enzymeColor, enzymeTypeHint } from '@/lib/enzymes';
 import { sanitizeInteger } from '@/lib/format';
 import { queryKeys, useEnzymes } from '@/lib/queries';
 import { fieldRules, validate } from '@/lib/validators';
@@ -188,7 +188,7 @@ export function CreateExperimentPage() {
                     <CheckCard
                       key={enzyme.id}
                       title={enzyme.name}
-                      subtitle={enzymeTypeLabel(enzyme.type)}
+                      subtitle={enzymeTypeHint(enzyme.name, enzyme.type)}
                       checked={selectedEnzymes.some((e) => e.id === enzyme.id)}
                       onToggle={() => toggleEnzyme(enzyme)}
                       color={enzymeColor(enzyme.type)}

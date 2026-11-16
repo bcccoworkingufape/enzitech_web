@@ -38,13 +38,13 @@ export function ResetPasswordPage() {
   };
 
   return (
-    <AuthLayout title="Redefinir Senha" description="Escolha uma nova senha para sua conta." steps={[3, 3]} footer={<Link to="/login" className="link">Voltar para o login</Link>}>
+    <AuthLayout title="Redefinir senha" description="Escolha uma nova senha para sua conta." steps={[3, 3]} footer={<Link to="/login" className="link">Voltar para o login</Link>}>
       <form onSubmit={onSubmit} noValidate>
-        <TextField label="Nova Senha" type="password" autoComplete="new-password" autoFocus {...newPassword.props} />
+        <TextField label="Nova senha" type="password" autoComplete="new-password" autoFocus {...newPassword.props} />
         <PasswordRequirements password={newPassword.value} />
-        <TextField label="Confirmar Nova Senha" type="password" autoComplete="new-password" {...confirm.props} />
+        <TextField label="Confirmar nova senha" type="password" autoComplete="new-password" {...confirm.props} />
         <Button type="submit" block disabled={!newPassword.value || !confirm.value} loading={loading} style={{ marginTop: 8 }}>
-          Redefinir Senha
+          Redefinir senha
         </Button>
       </form>
     </AuthLayout>

@@ -54,9 +54,9 @@
   --hover: rgb(25 28 25 / 0.05);
 
   --enzyme-betaglucosidase: #721817;
-  --enzyme-aryl: #fa9f42;
+  --enzyme-aryl: #b9650d;
   --enzyme-fosfatase-acida: #2b4162;
-  --enzyme-fosfatase-alcalina: #88ab75;
+  --enzyme-fosfatase-alcalina: #4f7f3a;
   --enzyme-urease: #675c38;
   --enzyme-fda: #92437f;
 }
@@ -95,6 +95,12 @@
     --card-bg: #1c201c;
     --sidebar-bg: #171a17;
     --hover: rgb(225 227 222 / 0.06);
+    --enzyme-betaglucosidase: #e57373;
+    --enzyme-aryl: #fa9f42;
+    --enzyme-fosfatase-acida: #7f9fd6;
+    --enzyme-fosfatase-alcalina: #88ab75;
+    --enzyme-urease: #c4b27c;
+    --enzyme-fda: #d886c6;
   }
 }
 
@@ -131,6 +137,12 @@
   --card-bg: #1c201c;
   --sidebar-bg: #171a17;
   --hover: rgb(225 227 222 / 0.06);
+  --enzyme-betaglucosidase: #e57373;
+  --enzyme-aryl: #fa9f42;
+  --enzyme-fosfatase-acida: #7f9fd6;
+  --enzyme-fosfatase-alcalina: #88ab75;
+  --enzyme-urease: #c4b27c;
+  --enzyme-fda: #d886c6;
 }
 
 :root {

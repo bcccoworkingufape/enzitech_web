@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Plus, TestTube, Trash } from '@phosphor-icons/react';
+import { Plus, Trash } from '@phosphor-icons/react';
 import { errorMessage } from '@/api/client';
 import { treatmentsApi } from '@/api/endpoints';
 import type { Treatment } from '@/api/types';
@@ -60,7 +60,7 @@ export function TreatmentsPage() {
       <section className="card">
         <div className="toolbar">
           <SearchBox value={search} onChange={setSearch} placeholder="Filtrar tratamentos" />
-          {!isLoading && <span className="muted" style={{ fontSize: 13 }}>🧪 {rows.length} tratamento(s)</span>}
+          {!isLoading && <span className="muted" style={{ fontSize: 13 }}>{rows.length} {rows.length === 1 ? 'tratamento' : 'tratamentos'}</span>}
         </div>
         {isLoading ? (
           <TableSkeleton />
@@ -73,7 +73,7 @@ export function TreatmentsPage() {
           />
         ) : (
           <div className="table-wrap">
-            <table className="table">
+            <table className="table stackable">
               <thead>
                 <tr>
                   <th><SortHeader label="Nome" sortKey="name" sort={sort} onSort={setSort} /></th>
@@ -86,13 +86,10 @@ export function TreatmentsPage() {
                 {rows.map((t) => (
                   <tr key={t.id}>
                     <td className="cell-title" style={{ whiteSpace: 'nowrap' }}>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-                        <TestTube size={18} color="var(--primary)" />
-                        {t.name}
-                      </span>
+                      {t.name}
                     </td>
                     <td className="muted">{t.description || '—'}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{formatDate(t.createdAt)}</td>
+                    <td data-label="Criado em" style={{ whiteSpace: 'nowrap' }}>{formatDate(t.createdAt)}</td>
                     <td className="actions">
                       <button className="icon-btn sm danger" title="Excluir" aria-label={`Excluir ${t.name}`} onClick={() => deleteTreatment(t)}>
                         <Trash size={18} />

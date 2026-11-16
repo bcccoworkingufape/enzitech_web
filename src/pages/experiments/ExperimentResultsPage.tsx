@@ -15,18 +15,18 @@ import { formatNumber } from '@/lib/format';
 import { queryKeys, useExperiment } from '@/lib/queries';
 import { buildResultsWorkbook, downloadBlob } from '@/lib/spreadsheet';
 
-const COLUMNS: { label: string; title?: string; value: (r: TotalResultData) => string }[] = [
+const COLUMNS: { label: string; title?: string; constant?: boolean; value: (r: TotalResultData) => string }[] = [
   { label: 'ID', value: (r) => String(r.repetitionId) },
   { label: 'Amostra', value: (r) => formatNumber(r.sample) },
   { label: 'Am. Branca', title: 'Amostra Branca', value: (r) => formatNumber(r.whiteSample) },
   { label: 'Diferença', value: (r) => formatNumber(r.differenceBetweenSamples) },
-  { label: 'Var. A', title: 'Variável A', value: (r) => formatNumber(r.variableA) },
-  { label: 'Var. B', title: 'Variável B', value: (r) => formatNumber(r.variableB) },
+  { label: 'Var. A', title: 'Variável A', constant: true, value: (r) => formatNumber(r.variableA) },
+  { label: 'Var. B', title: 'Variável B', constant: true, value: (r) => formatNumber(r.variableB) },
   { label: 'Curva', value: (r) => formatNumber(r.curve) },
-  { label: 'F. Correção', title: 'Fator de correção', value: (r) => formatNumber(r.correctionFactor) },
-  { label: 'Tempo (h)', value: (r) => String(r.time) },
-  { label: 'Volume', value: (r) => formatNumber(r.volume) },
-  { label: 'Peso Am.', title: 'Peso da Amostra', value: (r) => formatNumber(r.weightSample) },
+  { label: 'F. Correção', title: 'Fator de correção', constant: true, value: (r) => formatNumber(r.correctionFactor) },
+  { label: 'Tempo (h)', constant: true, value: (r) => String(r.time) },
+  { label: 'Volume', constant: true, value: (r) => formatNumber(r.volume) },
+  { label: 'Peso Am.', title: 'Peso da Amostra', constant: true, value: (r) => formatNumber(r.weightSample) },
   { label: 'Resultado', value: (r) => formatNumber(r.result) },
 ];
 
@@ -39,6 +39,12 @@ export function ExperimentResultsPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const results = data?.result ?? [];
   const current = results.find((r) => r.enzyme.id === selected) ?? results[0];
+  const currentRows = current ? current.processes.flatMap((p) => p.results) : [];
+  const sampleRow = currentRows[0];
+  const constantColumns = sampleRow
+    ? COLUMNS.filter((c) => c.constant && currentRows.every((r) => c.value(r) === c.value(sampleRow)))
+    : [];
+  const visibleColumns = COLUMNS.filter((c) => !constantColumns.includes(c));
   const filename = `${(experiment?.name ?? 'experimento').replace(/\s+/g, '-')}.xlsx`;
   const canShare = typeof navigator.canShare === 'function';
 
@@ -93,7 +99,7 @@ export function ExperimentResultsPage() {
       {isLoading ? (
         <section className="card"><TableSkeleton /></section>
       ) : isError ? (
-        <section className="card"><ErrorView message="⚠ Não foi possível obter os resultados." /></section>
+        <section className="card"><ErrorView message="Não foi possível obter os resultados." /></section>
       ) : !current ? (
         <section className="card"><NotFoundView message="Sem dados!" /></section>
       ) : (
@@ -114,10 +120,16 @@ export function ExperimentResultsPage() {
               <dl className="key-values" style={{ margin: 0 }}>
                 <KeyValue label="Tipo" value={enzymeTypeLabel(current.enzyme.type)} />
                 <KeyValue label="Fórmula" value={current.enzyme.formula ?? '—'} />
-                <KeyValue label="Variável A" value={formatNumber(current.enzyme.variableA)} />
-                <KeyValue label="Variável B" value={formatNumber(current.enzyme.variableB)} />
-                <KeyValue label="Tempo (h)" value={formatNumber(current.enzyme.duration)} />
-                <KeyValue label="Volume" value={formatNumber(current.enzyme.size)} />
+                {sampleRow
+                  ? constantColumns.map((c) => <KeyValue key={c.label} label={c.title ?? c.label} value={c.value(sampleRow)} />)
+                  : (
+                    <>
+                      <KeyValue label="Variável A" value={formatNumber(current.enzyme.variableA)} />
+                      <KeyValue label="Variável B" value={formatNumber(current.enzyme.variableB)} />
+                      <KeyValue label="Tempo (h)" value={formatNumber(current.enzyme.duration)} />
+                      <KeyValue label="Volume" value={formatNumber(current.enzyme.size)} />
+                    </>
+                  )}
               </dl>
             </div>
           </section>
@@ -144,7 +156,7 @@ export function ExperimentResultsPage() {
                   <table className="table compact data-table">
                     <thead>
                       <tr>
-                        {COLUMNS.map((c) => (
+                        {visibleColumns.map((c) => (
                           <th key={c.label} title={c.title} className="num">{c.label}</th>
                         ))}
                       </tr>
@@ -152,7 +164,7 @@ export function ExperimentResultsPage() {
                     <tbody>
                       {rows.map((row) => (
                         <tr key={row.id}>
-                          {COLUMNS.map((c) => (
+                          {visibleColumns.map((c) => (
                             <td key={c.label} className="num" style={c.label === 'Resultado' ? { fontWeight: 700 } : undefined}>
                               {c.value(row)}
                             </td>
@@ -160,7 +172,7 @@ export function ExperimentResultsPage() {
                         </tr>
                       ))}
                       {rows.length === 0 && (
-                        <tr><td colSpan={COLUMNS.length} className="muted">Sem dados!</td></tr>
+                        <tr><td colSpan={visibleColumns.length} className="muted">Sem dados!</td></tr>
                       )}
                     </tbody>
                   </table>

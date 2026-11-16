@@ -64,42 +64,42 @@ export const http = {
 };
 
 const KNOWN_BACKEND_MESSAGES: Record<string, string> = {
-  'O e-mail não está cadastrado em nossa base de dados.': '⚠ O e-mail não está cadastrado em nossa base de dados.',
-  'Código inválido.': '⚠ Código inválido.',
-  'Código inválido ou não encontrado.': '⚠ Código inválido ou não encontrado.',
-  'O código expirou. Por favor, solicite um novo.': '⚠ O código expirou. Por favor, solicite um novo.',
-  'A nova senha não pode ser igual à senha atual.': '⚠ A nova senha não pode ser igual à senha atual.',
+  'O e-mail não está cadastrado em nossa base de dados.': 'O e-mail não está cadastrado em nossa base de dados.',
+  'Código inválido.': 'Código inválido.',
+  'Código inválido ou não encontrado.': 'Código inválido ou não encontrado.',
+  'O código expirou. Por favor, solicite um novo.': 'O código expirou. Por favor, solicite um novo.',
+  'A nova senha não pode ser igual à senha atual.': 'A nova senha não pode ser igual à senha atual.',
 };
 
 export function errorMessage(
   error: unknown,
   options: { isLogin?: boolean; useBackendMessage?: boolean } = {},
 ): string {
-  if (!(error instanceof ApiError)) return '⚠ Ocorreu um erro inesperado.';
+  if (!(error instanceof ApiError)) return 'Ocorreu um erro inesperado.';
   if (options.useBackendMessage) {
     const known = KNOWN_BACKEND_MESSAGES[error.serverMessage.trim()];
     if (known) return known;
   }
   switch (error.status) {
     case 0:
-      return '⚠ Sem conexão com a internet, verifique seu acesso à rede e tente novamente.';
+      return 'Sem conexão com a internet, verifique seu acesso à rede e tente novamente.';
     case 400:
-      return options.isLogin ? '⚠ E-mail ou senha inválidos.' : '⚠ Dados incorretos: Algum campo inválido ou ausente.';
+      return options.isLogin ? 'E-mail ou senha inválidos.' : 'Dados incorretos: Algum campo inválido ou ausente.';
     case 401:
-      return '⚠ Não autorizado: Token expirado ou usuário inválido.';
+      return 'Não autorizado: Token expirado ou usuário inválido.';
     case 403:
-      return '⚠ Acesso negado: Você não tem permissão para executar esta ação.';
+      return 'Acesso negado: Você não tem permissão para executar esta ação.';
     case 404:
-      return options.isLogin ? '⚠ Usuário não encontrado.' : '⚠ Não encontrado: Talvez essa informação não exista mais.';
+      return options.isLogin ? 'Usuário não encontrado.' : 'Não encontrado: Talvez essa informação não exista mais.';
     case 422:
-      return '⚠ Entidade não processável: Não foi possível processar as instruções presentes.';
+      return 'Entidade não processável: Não foi possível processar as instruções presentes.';
     case 500:
-      return '⚠ Erro do Servidor: Não foi possível atender à solicitação.';
+      return 'Erro do Servidor: Não foi possível atender à solicitação.';
     case 502:
-      return '⚠ Bad Gateway: Não foi possível atender à solicitação.';
+      return 'Bad Gateway: Não foi possível atender à solicitação.';
     case 503:
-      return '⚠ Erro do Servidor: Não foi possível atender à solicitação neste momento.';
+      return 'Erro do Servidor: Não foi possível atender à solicitação neste momento.';
     default:
-      return '⚠ Erro de Servidor, tente novamente mais tarde.';
+      return 'Erro de Servidor, tente novamente mais tarde.';
   }
 }

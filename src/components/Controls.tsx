@@ -171,16 +171,16 @@ export function StatCard({
   icon,
   value,
   label,
-  tone,
+  className = '',
 }: {
   icon: ReactNode;
   value: ReactNode;
   label: string;
-  tone?: 'secondary' | 'tertiary';
+  className?: string;
 }) {
   return (
-    <div className="card stat">
-      <span className={`stat-icon ${tone ?? ''}`}>{icon}</span>
+    <div className={`card stat ${className}`}>
+      <span className="stat-icon">{icon}</span>
       <div>
         <div className="stat-value">{value}</div>
         <div className="stat-label">{label}</div>

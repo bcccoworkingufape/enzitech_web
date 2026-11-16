@@ -11,7 +11,7 @@ import { Card, CheckCard } from '@/components/Controls';
 import { ErrorView, LoadingView } from '@/components/StateViews';
 import { TextField } from '@/components/TextField';
 import { useSnackbar } from '@/context/SnackbarContext';
-import { enzymeColor, enzymeTypeLabel } from '@/lib/enzymes';
+import { enzymeColor, enzymeTypeHint } from '@/lib/enzymes';
 import { sanitizeInteger } from '@/lib/format';
 import { queryKeys, useEnzymes, useExperiment, useTreatments } from '@/lib/queries';
 import { rules, validate } from '@/lib/validators';
@@ -129,13 +129,13 @@ function EditForm({
   return (
     <form onSubmit={(e) => (e.preventDefault(), save())} noValidate className="stack">
       <Card title="Identificação do experimento" icon={<Flask size={20} />}>
-        <TextField label="Nome" value={name} onChange={setName} error={name.trim() ? null : '⚠ Campo obrigatório'} />
+        <TextField label="Nome" value={name} onChange={setName} error={name.trim() ? null : 'Campo obrigatório'} />
         <TextField
           label="Descrição"
           multiline
           value={description}
           onChange={setDescription}
-          error={description.trim() ? null : '⚠ Campo obrigatório'}
+          error={description.trim() ? null : 'Campo obrigatório'}
         />
         <div style={{ maxWidth: 320 }}>
           <TextField
@@ -172,7 +172,7 @@ function EditForm({
             <CheckCard
               key={enzyme.id}
               title={enzyme.name}
-              subtitle={enzymeTypeLabel(enzyme.type)}
+              subtitle={enzymeTypeHint(enzyme.name, enzyme.type)}
               checked={selectedEnzymes.some((e) => e.id === enzyme.id)}
               onToggle={() => toggleEnzyme(enzyme)}
               color={enzymeColor(enzyme.type)}

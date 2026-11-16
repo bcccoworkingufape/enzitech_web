@@ -37,7 +37,7 @@ export function VerifyCodePage() {
 
   return (
     <AuthLayout
-      title="Verificar Código"
+      title="Verificar código"
       description={<>Digite o código de 6 dígitos que enviamos para <strong>{email}</strong>.</>}
       steps={[2, 3]}
       footer={<Link to="/recuperar-senha" className="link">Usar outro e-mail</Link>}

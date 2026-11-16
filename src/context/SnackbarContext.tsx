@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 
 export type SnackbarType = 'regular' | 'success' | 'error';
 
@@ -76,6 +77,8 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
             className={`snackbar ${item.type ?? 'regular'} ${item.centered ? 'centered' : ''}`}
             style={item.color ? { background: item.color, color: '#fff' } : undefined}
           >
+            {item.type === 'error' && <WarningCircle size={20} aria-hidden="true" />}
+            {item.type === 'success' && <CheckCircle size={20} aria-hidden="true" />}
             <span className="snackbar-message">{item.message}</span>
             {item.action && (
               <button

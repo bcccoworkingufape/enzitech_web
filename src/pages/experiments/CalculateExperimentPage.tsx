@@ -12,7 +12,7 @@ import { TableSkeleton } from '@/components/ListHelpers';
 import { ErrorView, LoadingView, NotFoundView } from '@/components/StateViews';
 import { Stepper } from '@/components/StepIndicator';
 import { useSnackbar } from '@/context/SnackbarContext';
-import { enzymeColor, enzymeTypeLabel } from '@/lib/enzymes';
+import { enzymeColor, enzymeTypeHint } from '@/lib/enzymes';
 import { formatNumber, parseDecimal, sanitizeDecimal } from '@/lib/format';
 import { queryKeys, useExperiment } from '@/lib/queries';
 import { fieldRules, validate } from '@/lib/validators';
@@ -97,7 +97,7 @@ function CalculateFlow({ experiment }: { experiment: Experiment }) {
                   <CheckCard
                     key={e.id}
                     title={e.name}
-                    subtitle={enzymeTypeLabel(e.type)}
+                    subtitle={enzymeTypeHint(e.name, e.type)}
                     checked={enzymeIds.includes(e.id)}
                     onToggle={() => toggle(setEnzymeIds, e.id)}
                     color={enzymeColor(e.type)}
