@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { setUnauthorizedHandler } from '@/api/client';
-import { authApi } from '@/api/endpoints';
+import { authApi, usersApi } from '@/api/endpoints';
 import type { User } from '@/api/types';
 import { session } from '@/lib/session';
 import { useSnackbar } from './SnackbarContext';
@@ -11,6 +11,7 @@ interface AuthContextValue {
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<User>;
   logout: (message?: string) => void;
+  updateUser: (user: User) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -37,15 +38,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return response.user;
   }, []);
 
+  const updateUser = useCallback((next: User) => {
+    session.saveUser(next);
+    setUser(next);
+  }, []);
+
   const userRef = useRef(user);
   userRef.current = user;
+
+  // O usuário salvo no navegador é uma cópia do login; revalida ao abrir o app para
+  // refletir mudanças feitas em outro dispositivo (ex.: nova foto de perfil).
+  const userId = user?.id;
+  useEffect(() => {
+    if (!userId) return;
+    let cancelled = false;
+    usersApi
+      .me()
+      .then((fresh) => {
+        if (!cancelled && session.getToken() && fresh.id === userRef.current?.id) updateUser(fresh);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, updateUser]);
 
   useEffect(
     () =>
       session.onExternalChange(() => {
         const current = userRef.current;
         const next = session.getToken() ? session.getUser() : null;
-        if (current?.id === next?.id) return;
+        if (current?.id === next?.id) {
+          if (next) setUser(next);
+          return;
+        }
         queryClient.clear();
         setUser(next);
         if (current && !next) snackbar.show('Sua sessão foi encerrada em outra aba.');
@@ -62,8 +88,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [logout, snackbar]);
 
   const value = useMemo(
-    () => ({ user, isAdmin: user?.role === 'ADMIN', login, logout }),
-    [user, login, logout],
+    () => ({ user, isAdmin: user?.role === 'ADMIN', login, logout, updateUser }),
+    [user, login, logout, updateUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

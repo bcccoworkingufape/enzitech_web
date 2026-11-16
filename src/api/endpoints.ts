@@ -23,6 +23,17 @@ export const authApi = {
     http.post<User>('/users', { name, email, password }),
 };
 
+export const usersApi = {
+  me: () => http.get<User>('/users/me'),
+  avatar: (id: string, version: string) => http.blob(`/users/${id}/avatar?v=${encodeURIComponent(version)}`),
+  uploadAvatar: (image: Blob) => {
+    const form = new FormData();
+    form.append('file', image, `avatar.${image.type.split('/')[1] ?? 'img'}`);
+    return http.put<User>('/users/me/avatar', form);
+  },
+  removeAvatar: () => http.delete<User>('/users/me/avatar'),
+};
+
 export const experimentsApi = {
   list: (finished?: boolean) =>
     http.get<ExperimentList>(`/experiments${finished === undefined ? '' : `?finished=${finished}`}`),

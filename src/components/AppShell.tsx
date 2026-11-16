@@ -19,6 +19,7 @@ import { useSettings } from '@/context/SettingsContext';
 import { preferences } from '@/lib/session';
 import { useAllExperiments } from '@/lib/queries';
 import { toPercent } from '@/lib/format';
+import { Avatar } from './Avatar';
 import { IconLogo, WordmarkLogo } from './Brand';
 import { useDismiss } from './Controls';
 
@@ -147,7 +148,7 @@ function UserMenu({ onSignOut }: { onSignOut: () => void }) {
   return (
     <div ref={ref} style={{ position: 'relative' }}>
       <button className="user-button" onClick={() => setOpen((o) => !o)} aria-haspopup="menu" aria-expanded={open}>
-        <span className="avatar">{initials(user.name)}</span>
+        <Avatar user={user} />
         <span className="user-button-text">
           <span className="user-button-name">{user.name}</span>
           <br />
@@ -158,7 +159,7 @@ function UserMenu({ onSignOut }: { onSignOut: () => void }) {
       {open && (
         <div className="menu" role="menu">
           <div className="menu-user">
-            <span className="avatar">{initials(user.name)}</span>
+            <Avatar user={user} />
             <div style={{ minWidth: 0 }}>
               <div className="cell-title">{user.name}</div>
               <div className="cell-sub" style={{ maxWidth: 180 }}>

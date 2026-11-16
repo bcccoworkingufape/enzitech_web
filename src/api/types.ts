@@ -5,6 +5,8 @@ export interface User {
   name: string;
   email: string;
   role: Role;
+  /** Versão da foto de perfil (ISO); `null`/ausente = sem foto. */
+  avatarUpdatedAt?: string | null;
 }
 
 export interface AuthResponse {
