@@ -130,6 +130,12 @@
   font-size: 13px;
   font-weight: 700;
   flex: none;
+  overflow: hidden;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .user-button {
   display: flex;
@@ -760,6 +766,46 @@
 .settings-profile-name {
   font-size: 18px;
   font-weight: 700;
+}
+.settings-profile-text {
+  flex: 1;
+  min-width: 0;
+}
+.settings-profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.avatar-edit {
+  position: relative;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+.avatar-edit:disabled {
+  cursor: progress;
+}
+.avatar-edit:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.avatar-edit-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--card-bg);
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
 }
 .settings-field-text {
   flex: 1;

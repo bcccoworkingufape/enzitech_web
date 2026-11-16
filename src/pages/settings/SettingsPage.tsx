@@ -1,12 +1,30 @@
-import type { ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowSquareOut, Globe, Info, Moon, Question, SignOut, SlidersHorizontal, Sun, UserCircle } from '@phosphor-icons/react';
-import { initials, Page } from '@/components/AppShell';
+import {
+  ArrowSquareOut,
+  Camera,
+  Globe,
+  Info,
+  Moon,
+  Question,
+  SignOut,
+  SlidersHorizontal,
+  Sun,
+  Trash,
+  UserCircle,
+} from '@phosphor-icons/react';
+import { errorMessage } from '@/api/client';
+import { usersApi } from '@/api/endpoints';
+import { Page } from '@/components/AppShell';
+import { Avatar } from '@/components/Avatar';
 import { ThemedSvg } from '@/components/Brand';
 import { Button } from '@/components/Button';
 import { SegmentedButton, Switch } from '@/components/Controls';
 import { useAuth } from '@/context/AuthContext';
+import { useConfirm } from '@/context/DialogContext';
 import { useSettings, type ThemeMode } from '@/context/SettingsContext';
+import { useSnackbar } from '@/context/SnackbarContext';
+import { AvatarImageError, prepareAvatar } from '@/lib/avatarImage';
 import { AboutContent, FaqContent } from './AboutContent';
 
 const GITHUB_URL = 'https://github.com/bcccoworkingufape/enzitech_app';
@@ -41,6 +59,97 @@ function Field({ title, description, control }: { title: string; description?: R
         {description && <div className="settings-field-sub">{description}</div>}
       </div>
       {control && <div className="settings-field-control">{control}</div>}
+    </div>
+  );
+}
+
+function ProfilePhoto() {
+  const { user, updateUser } = useAuth();
+  const { confirmDeletion } = useSettings();
+  const confirm = useConfirm();
+  const snackbar = useSnackbar();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState<'upload' | 'remove' | null>(null);
+  if (!user) return null;
+
+  const hasPhoto = !!user.avatarUpdatedAt;
+  const pick = () => inputRef.current?.click();
+
+  const upload = async (file: File) => {
+    setBusy('upload');
+    try {
+      const image = await prepareAvatar(file);
+      updateUser(await usersApi.uploadAvatar(image));
+      snackbar.show('Foto de perfil atualizada.');
+    } catch (error) {
+      const message =
+        error instanceof AvatarImageError ? error.message : errorMessage(error, { useBackendMessage: true });
+      snackbar.show(message, { type: 'error' });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const remove = async () => {
+    if (
+      confirmDeletion &&
+      !(await confirm({
+        title: 'Remover foto de perfil',
+        content: 'Sua foto será removida e suas iniciais voltarão a ser exibidas.',
+        confirmLabel: 'Remover',
+      }))
+    )
+      return;
+    setBusy('remove');
+    try {
+      updateUser(await usersApi.removeAvatar());
+      snackbar.show('Foto de perfil removida.');
+    } catch (error) {
+      snackbar.show(errorMessage(error), { type: 'error' });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <div className="settings-profile">
+      <button
+        type="button"
+        className="avatar-edit"
+        onClick={pick}
+        disabled={!!busy}
+        aria-label={hasPhoto ? 'Alterar foto de perfil' : 'Adicionar foto de perfil'}
+        title={hasPhoto ? 'Alterar foto' : 'Adicionar foto'}
+      >
+        <Avatar user={user} size={72} />
+        <span className="avatar-edit-badge" aria-hidden="true">
+          {busy === 'upload' ? <span className="spinner small" /> : <Camera size={16} weight="fill" />}
+        </span>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        hidden
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          e.target.value = '';
+          if (file) upload(file);
+        }}
+      />
+      <div className="settings-profile-text">
+        <div className="settings-profile-name">{user.name}</div>
+        <div className="settings-profile-actions">
+          <Button variant="tonal" size="sm" icon={<Camera size={16} />} onClick={pick} loading={busy === 'upload'} disabled={!!busy}>
+            {hasPhoto ? 'Alterar foto' : 'Adicionar foto'}
+          </Button>
+          {hasPhoto && (
+            <Button variant="text" size="sm" icon={<Trash size={16} />} onClick={remove} loading={busy === 'remove'} disabled={!!busy}>
+              Remover
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -80,14 +189,9 @@ export function SettingsPage() {
         <div className="settings-content">
           {current === 'conta' && (
             <>
-              <Section title="Perfil" description="Informações da conta usada para acessar o Enzitech.">
+              <Section title="Perfil" description="Informações da conta usada para acessar o Enzitech. A foto é recortada no centro e reduzida automaticamente.">
                 <div className="settings-panel">
-                  <div className="settings-profile">
-                    <span className="avatar" style={{ width: 56, height: 56, fontSize: 18 }}>
-                      {initials(user.name)}
-                    </span>
-                    <div className="settings-profile-name">{user.name}</div>
-                  </div>
+                  <ProfilePhoto />
                   <Field title="Nome" control={<span className="settings-value">{user.name}</span>} />
                   <Field title="E-mail" control={<span className="settings-value">{user.email}</span>} />
                   <Field
