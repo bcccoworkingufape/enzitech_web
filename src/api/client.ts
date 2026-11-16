@@ -20,10 +20,11 @@ export function setUnauthorizedHandler(handler: (() => void) | null) {
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-async function request<T>(method: Method, path: string, body?: unknown): Promise<T> {
+async function send(method: Method, path: string, body?: unknown, accept = 'application/json'): Promise<Response> {
   const token = session.getToken();
-  const headers: Record<string, string> = { Accept: 'application/json' };
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  const headers: Record<string, string> = { Accept: accept };
+  const isForm = body instanceof FormData;
+  if (body !== undefined && !isForm) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
 
   let response: Response;
@@ -31,7 +32,7 @@ async function request<T>(method: Method, path: string, body?: unknown): Promise
     response = await fetch(`${API_BASE_URL}${path}`, {
       method,
       headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
     });
   } catch {
     throw new ApiError(0, 'NetworkError');
@@ -49,7 +50,11 @@ async function request<T>(method: Method, path: string, body?: unknown): Promise
     if (response.status === 401) onUnauthorized?.();
     throw new ApiError(response.status, String(message));
   }
+  return response;
+}
 
+async function request<T>(method: Method, path: string, body?: unknown): Promise<T> {
+  const response = await send(method, path, body);
   if (response.status === 204) return undefined as T;
   const text = await response.text();
   return (text ? JSON.parse(text) : undefined) as T;
@@ -61,6 +66,8 @@ export const http = {
   put: <T>(path: string, body?: unknown) => request<T>('PUT', path, body ?? {}),
   patch: <T>(path: string, body?: unknown) => request<T>('PATCH', path, body ?? {}),
   delete: <T = void>(path: string) => request<T>('DELETE', path),
+  /** Download binário autenticado (ex.: imagens), já que `<img src>` não envia o token. */
+  blob: async (path: string) => (await send('GET', path, undefined, 'image/*')).blob(),
 };
 
 const KNOWN_BACKEND_MESSAGES: Record<string, string> = {
@@ -69,6 +76,7 @@ const KNOWN_BACKEND_MESSAGES: Record<string, string> = {
   'Código inválido ou não encontrado.': 'Código inválido ou não encontrado.',
   'O código expirou. Por favor, solicite um novo.': 'O código expirou. Por favor, solicite um novo.',
   'A nova senha não pode ser igual à senha atual.': 'A nova senha não pode ser igual à senha atual.',
+  'Imagem inválida. Envie uma foto JPEG, PNG ou WebP.': 'Imagem inválida. Envie uma foto JPEG, PNG ou WebP.',
 };
 
 export function errorMessage(

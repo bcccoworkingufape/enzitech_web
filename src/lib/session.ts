@@ -34,6 +34,9 @@ export const session = {
     write(TOKEN_KEY, token);
     write(USER_KEY, JSON.stringify(user));
   },
+  saveUser(user: User) {
+    write(USER_KEY, JSON.stringify(user));
+  },
   clear() {
     write(TOKEN_KEY, null);
     write(USER_KEY, null);
