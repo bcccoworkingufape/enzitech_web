@@ -32,11 +32,6 @@ export function ThemedSvg({
   return <img src={`/svgs/${isDark ? 'dark' : 'light'}/${name}.svg`} alt={alt} className={className} style={style} />;
 }
 
-export function LogoMark({ width = 75 }: { width?: number }) {
-  const { isDark } = useSettings();
-  return <img src={isDark ? '/images/logo_on_dark.png' : '/images/logo_green.png'} alt="Enzitech" width={width} />;
-}
-
 export function IconLogo({ width = 75, spinning = false }: { width?: number; spinning?: boolean }) {
   return <img src="/svgs/icon_logo.svg" alt="" width={width} className={spinning ? 'logo-spin' : undefined} />;
 }

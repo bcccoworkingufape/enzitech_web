@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { ChartLineUp, FileXls, Flask } from '@phosphor-icons/react';
-import { LogoMark } from './Brand';
+import { AnimatedLogo } from './AnimatedLogo';
 
 export function AuthLayout({
   title,
@@ -18,23 +18,31 @@ export function AuthLayout({
   return (
     <div className="auth-page">
       <aside className="auth-aside">
-        <img className="auth-aside-logo" src="/svgs/dark/full_logo.svg" alt="Enzitech" />
-        <div>
-          <h2>Atividades enzimáticas do solo, do experimento ao resultado.</h2>
-          <p>Organize tratamentos e enzimas, registre as repetições e calcule os resultados direto do navegador.</p>
-          <div className="auth-features">
-            <div><Flask size={20} /> Experimentos com tratamentos, enzimas e repetições</div>
-            <div><ChartLineUp size={20} /> Cálculo automático a partir das amostras</div>
-            <div><FileXls size={20} /> Resultados exportáveis para Excel</div>
-          </div>
+        <div className="auth-rings" aria-hidden="true" />
+        <div className="auth-brand">
+          <AnimatedLogo className="auth-logo" />
+          <p className="auth-tagline">Atividades enzimáticas do solo, do experimento ao resultado.</p>
         </div>
-        <small>BCC Coworking · LEMA · UFAPE</small>
+        <div className="auth-aside-foot">
+          <ul className="auth-features">
+            <li>
+              <Flask size={18} /> Tratamentos, enzimas e repetições
+            </li>
+            <li>
+              <ChartLineUp size={18} /> Cálculo automático das amostras
+            </li>
+            <li>
+              <FileXls size={18} /> Resultados em Excel
+            </li>
+          </ul>
+          <small>BCC Coworking · LEMA · UFAPE</small>
+        </div>
       </aside>
       <main className="auth-main">
         <div className="auth-form">
           <div className="auth-form-head">
             <span className="auth-mobile-logo">
-              <LogoMark width={56} />
+              <AnimatedLogo />
             </span>
             <h1>{title}</h1>
             {description && <p>{description}</p>}
@@ -49,6 +57,7 @@ export function AuthLayout({
           {children}
           {footer && <div className="auth-footer">{footer}</div>}
         </div>
+        <small className="auth-version">Enzitech v{__APP_VERSION__}</small>
       </main>
     </div>
   );
