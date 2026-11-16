@@ -1,4 +1,3 @@
-/* ---------- Tipografia ---------- */
 .title-home {
   font-size: 30px;
   font-weight: 600;
@@ -64,7 +63,6 @@
   color: var(--on-surface-variant);
 }
 
-/* ---------- Botões ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -185,7 +183,6 @@
   cursor: not-allowed;
 }
 
-/* ---------- Campos ---------- */
 .field {
   position: relative;
   display: flex;
@@ -310,7 +307,6 @@ textarea.field-input {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
 }
 
-/* ---------- Cards ---------- */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--outline-variant);
@@ -351,7 +347,6 @@ textarea.field-input {
   justify-content: space-between;
 }
 
-/* ---------- Chips / badges ---------- */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -381,7 +376,6 @@ textarea.field-input {
   color: var(--on-surface-variant);
 }
 
-/* ---------- Abas ---------- */
 .tabs {
   display: flex;
   gap: 4px;
@@ -425,7 +419,6 @@ textarea.field-input {
   color: var(--on-primary-container);
 }
 
-/* ---------- Segmented button ---------- */
 .segmented {
   display: inline-flex;
   border: 1px solid var(--outline);
@@ -456,7 +449,6 @@ textarea.field-input {
   background: var(--hover);
 }
 
-/* ---------- Switch ---------- */
 .switch {
   position: relative;
   width: 52px;
@@ -494,7 +486,6 @@ textarea.field-input {
   background: var(--on-primary);
 }
 
-/* ---------- Seleção em grade (checkbox cards) ---------- */
 .check-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -556,7 +547,6 @@ textarea.field-input {
   flex: none;
 }
 
-/* ---------- Progresso ---------- */
 .percent {
   position: relative;
   display: inline-grid;
@@ -647,7 +637,6 @@ textarea.field-input {
   }
 }
 
-/* ---------- Estados ---------- */
 .state-view {
   display: flex;
   flex-direction: column;
@@ -667,7 +656,6 @@ textarea.field-input {
   color: var(--on-surface-variant);
 }
 
-/* ---------- Snackbar ---------- */
 .snackbar-host {
   position: fixed;
   left: 50%;
@@ -729,7 +717,6 @@ textarea.field-input {
   }
 }
 
-/* ---------- Dialog ---------- */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -787,7 +774,6 @@ textarea.field-input {
   }
 }
 
-/* ---------- Menu suspenso ---------- */
 .menu {
   position: absolute;
   right: 0;
@@ -829,7 +815,6 @@ textarea.field-input {
   background: var(--outline-variant);
 }
 
-/* ---------- Tabela ---------- */
 .table-wrap {
   position: relative;
   overflow-x: auto;
@@ -919,7 +904,6 @@ textarea.field-input {
   margin: 0;
 }
 
-/* ---------- Requisitos de senha ---------- */
 .password-req {
   margin: -6px 0 16px;
   padding: 12px;
@@ -951,7 +935,6 @@ textarea.field-input {
   color: var(--primary);
 }
 
-/* ---------- Stepper horizontal ---------- */
 .hstepper {
   display: flex;
   align-items: center;

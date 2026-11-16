@@ -6,3 +6,7 @@ dist
 *.tsbuildinfo
 
 .env.local
+
+deploy/nginx/enzitech-web.conf
+.claude/
+CLAUDE.md
